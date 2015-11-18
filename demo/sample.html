@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>sample</title>
+
+    <script type="text/javascript" src="../dist/googleSpreadsheetsParser.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
+</head>
+<body>
+
+<script>
+    window.onload = function () {
+        this.updateSpreadSheet = function () {
+            var url = $("#publishedUrl")[0].value;
+            var gss = new GoogleSpreadsheetsParser(url, true);
+
+            console.log(gss.titles);
+            console.log(gss.contents);
+        }
+    };
+</script>
+
+<h1>GoogleSpreadSheetParser Sample</h1>
+
+<div class="panel-body">
+    <ul>
+        <li>Enter published Spreadsheet url</li>
+        <li>Click "Get data", output data into console log.</li>
+    </ul>
+    <input id="publishedUrl" type="text" size="100px"
+           value="https://docs.google.com/spreadsheets/d/1vyPu1EtzU1DvGXfthjrR-blJ8mGe75TL4BFNWtFMm0I/pubhtml">
+    <button onclick="updateSpreadSheet()">Get data</button>
+</div>
+
+
+</body>
+</html>
