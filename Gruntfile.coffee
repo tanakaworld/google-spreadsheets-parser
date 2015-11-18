@@ -4,8 +4,12 @@ module.exports = (grunt)->
       dist:
         options:
           bare: true
+          join: true
         files:
-          'dist/googleSpreadsheetsParser.js': 'src/googleSpreadsheetsParser.coffee'
+          'dist/googleSpreadsheetsParser.js': [
+            'src/googleSpreadsheetsUtil.coffee'
+            'src/googleSpreadsheetsParser.coffee'
+          ]
   })
 
   grunt.loadNpmTasks 'grunt-contrib-coffee'

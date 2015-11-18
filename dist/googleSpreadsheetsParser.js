@@ -1,25 +1,9 @@
-var GoogleSpreadsheetsParser;
+var GoogleSpreadsheetsParser, GoogleSpreadsheetsUtil;
 
-GoogleSpreadsheetsParser = (function() {
-  var _extractKey, _getFeeds, _getWorksheetId, _makeContents, _makeTitle;
+GoogleSpreadsheetsUtil = (function() {
+  function GoogleSpreadsheetsUtil() {}
 
-  function GoogleSpreadsheetsParser(publishedUrl, hasTitle) {
-    var columnCount, feedEntry, feeds, key, mtd;
-    if (hasTitle == null) {
-      hasTitle = false;
-    }
-    key = _extractKey(publishedUrl);
-    mtd = _getWorksheetId(key);
-    feeds = _getFeeds(key, mtd);
-    feedEntry = feeds.feed.entry;
-    if (hasTitle) {
-      this.titles = _makeTitle(feedEntry);
-    }
-    columnCount = feedEntry.pop().gs$cell.col;
-    this.contents = _makeContents(feedEntry, Number(columnCount));
-  }
-
-  _extractKey = function(publishedUrl) {
+  GoogleSpreadsheetsUtil.prototype.extractKey = function(publishedUrl) {
     var matched;
     matched = publishedUrl.match(/https:\/\/docs.google.com\/spreadsheets\/d\/(.+)\/pubhtml/);
     if (matched.length !== 2) {
@@ -28,7 +12,7 @@ GoogleSpreadsheetsParser = (function() {
     return matched[1];
   };
 
-  _getWorksheetId = function(key) {
+  GoogleSpreadsheetsUtil.prototype.getWorksheetId = function(key) {
     var basicInfo, matched, url, xhr;
     url = "https://spreadsheets.google.com/feeds/worksheets/" + key + "/public/basic?alt=json";
     xhr = new XMLHttpRequest();
@@ -45,7 +29,7 @@ GoogleSpreadsheetsParser = (function() {
     return matched[1];
   };
 
-  _getFeeds = function(key, workSheetId) {
+  GoogleSpreadsheetsUtil.prototype.getFeeds = function(key, workSheetId) {
     var feeds, url, xhr;
     url = "https://spreadsheets.google.com/feeds/cells/" + key + "/" + workSheetId + "/public/values?alt=json";
     xhr = new XMLHttpRequest();
@@ -58,7 +42,7 @@ GoogleSpreadsheetsParser = (function() {
     return feeds;
   };
 
-  _makeTitle = function(feedEntry) {
+  GoogleSpreadsheetsUtil.prototype.makeTitle = function(feedEntry) {
     var cell, i, len, obj, titles;
     titles = [];
     for (i = 0, len = feedEntry.length; i < len; i++) {
@@ -72,7 +56,7 @@ GoogleSpreadsheetsParser = (function() {
     }
   };
 
-  _makeContents = function(feedEntry, columnCount) {
+  GoogleSpreadsheetsUtil.prototype.makeContents = function(feedEntry, columnCount) {
     var cell, contents, i, len, obj, row, rowNumber;
     contents = [];
     rowNumber = 0;
@@ -93,6 +77,28 @@ GoogleSpreadsheetsParser = (function() {
     }
     return contents;
   };
+
+  return GoogleSpreadsheetsUtil;
+
+})();
+
+GoogleSpreadsheetsParser = (function() {
+  function GoogleSpreadsheetsParser(publishedUrl, hasTitle) {
+    var _util, columnCount, feedEntry, feeds, key, mtd;
+    if (hasTitle == null) {
+      hasTitle = false;
+    }
+    _util = new GoogleSpreadsheetsUtil();
+    key = _util.extractKey(publishedUrl);
+    mtd = _util.getWorksheetId(key);
+    feeds = _util.getFeeds(key, mtd);
+    feedEntry = feeds.feed.entry;
+    if (hasTitle) {
+      this.titles = _util.makeTitle(feedEntry);
+    }
+    columnCount = feedEntry.pop().gs$cell.col;
+    this.contents = _util.makeContents(feedEntry, Number(columnCount));
+  }
 
   return GoogleSpreadsheetsParser;
 
