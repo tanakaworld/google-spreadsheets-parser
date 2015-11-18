@@ -6,7 +6,7 @@ GoogleSpreadsheetsUtil = (function() {
   GoogleSpreadsheetsUtil.prototype.extractKey = function(publishedUrl) {
     var matched;
     matched = publishedUrl.match(/https:\/\/docs.google.com\/spreadsheets\/d\/(.+)\/pubhtml/);
-    if (matched.length !== 2) {
+    if (matched === null || matched.length !== 2) {
       return null;
     }
     return matched[1];
@@ -23,7 +23,7 @@ GoogleSpreadsheetsUtil = (function() {
       basicInfo = JSON.parse(xhr.responseText);
       matched = basicInfo.feed.entry[0].id.$t.match(/https:\/\/spreadsheets.google.com\/feeds\/worksheets\/.+\/public\/basic\/(.+)/);
     }
-    if (matched.length !== 2) {
+    if (matched === null || matched.length !== 2) {
       return null;
     }
     return matched[1];
@@ -48,17 +48,25 @@ GoogleSpreadsheetsUtil = (function() {
     for (i = 0, len = feedEntry.length; i < len; i++) {
       obj = feedEntry[i];
       cell = obj.gs$cell;
+      if (cell === null) {
+        return titles;
+      }
       if (Number(cell.row) === 1) {
         titles.push(cell.$t);
       } else {
         return titles;
       }
     }
+    return titles;
   };
 
-  GoogleSpreadsheetsUtil.prototype.makeContents = function(feedEntry, columnCount) {
-    var cell, contents, i, len, obj, row, rowNumber;
+  GoogleSpreadsheetsUtil.prototype.makeContents = function(feedEntry) {
+    var cell, columnCount, contents, i, len, obj, row, rowNumber;
     contents = [];
+    if (!(feedEntry.length >= 1 && feedEntry[0].gs$cell)) {
+      return contents;
+    }
+    columnCount = Number(feedEntry[feedEntry.length - 1].gs$cell.col);
     rowNumber = 0;
     for (i = 0, len = feedEntry.length; i < len; i++) {
       obj = feedEntry[i];
@@ -84,7 +92,7 @@ GoogleSpreadsheetsUtil = (function() {
 
 GoogleSpreadsheetsParser = (function() {
   function GoogleSpreadsheetsParser(publishedUrl, hasTitle) {
-    var _util, columnCount, feedEntry, feeds, key, mtd;
+    var _util, feedEntry, feeds, key, mtd;
     if (hasTitle == null) {
       hasTitle = false;
     }
@@ -96,8 +104,7 @@ GoogleSpreadsheetsParser = (function() {
     if (hasTitle) {
       this.titles = _util.makeTitle(feedEntry);
     }
-    columnCount = feedEntry.pop().gs$cell.col;
-    this.contents = _util.makeContents(feedEntry, Number(columnCount));
+    this.contents = _util.makeContents(feedEntry);
   }
 
   return GoogleSpreadsheetsParser;

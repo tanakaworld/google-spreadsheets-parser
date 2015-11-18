@@ -2,7 +2,7 @@ class GoogleSpreadsheetsUtil
 
   extractKey: (publishedUrl) ->
     matched = publishedUrl.match(/https:\/\/docs.google.com\/spreadsheets\/d\/(.+)\/pubhtml/)
-    return null if matched.length isnt 2
+    return null if matched is null or matched.length isnt 2
     return matched[1]
 
   getWorksheetId: (key) ->
@@ -16,7 +16,7 @@ class GoogleSpreadsheetsUtil
       basicInfo = JSON.parse(xhr.responseText)
       matched = basicInfo.feed.entry[0].id.$t.match(/https:\/\/spreadsheets.google.com\/feeds\/worksheets\/.+\/public\/basic\/(.+)/)
 
-    return null if matched.length isnt 2
+    return null if matched is null or matched.length isnt 2
     return matched[1]
 
   getFeeds: (key, workSheetId) ->
@@ -39,13 +39,23 @@ class GoogleSpreadsheetsUtil
     for obj in feedEntry
       cell = obj.gs$cell
 
+      if cell is null
+        return titles
+
       if Number(cell.row) is 1
         titles.push(cell.$t)
       else
         return titles
 
-  makeContents: (feedEntry, columnCount) ->
+    return titles
+
+  makeContents: (feedEntry) ->
     contents = []
+
+    unless feedEntry.length >= 1 and feedEntry[0].gs$cell
+      return contents
+
+    columnCount = Number(feedEntry[feedEntry.length - 1].gs$cell.col)
 
     rowNumber = 0
 

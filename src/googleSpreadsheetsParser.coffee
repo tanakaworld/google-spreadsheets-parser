@@ -10,6 +10,4 @@ class GoogleSpreadsheetsParser
     feedEntry = feeds.feed.entry
 
     @titles = _util.makeTitle(feedEntry) if hasTitle
-
-    columnCount = feedEntry.pop().gs$cell.col
-    @contents = _util.makeContents(feedEntry, Number(columnCount))
+    @contents = _util.makeContents(feedEntry)
