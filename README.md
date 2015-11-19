@@ -3,6 +3,22 @@
 # google-spreadsheets-parser
 Simple Google Spreadsheets parser for JavaScript
 
+## Installation
+
+#### NPM
+```
+npm install google-spreadsheets-parser
+```
+
+#### Bower
+```
+bower install google-spreadsheets-parser
+```
+
+#### Manual Download
+Download from [here](https://github.com/TanakaYutaro/google-spreadsheets-parser/releases)
+
+
 ## Introduction
 
 1. Create new Google Spreadsheet
