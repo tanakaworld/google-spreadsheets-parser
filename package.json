@@ -1,5 +1,6 @@
 {
-  "name": "google-spread-sheet-parser",
+  "name": "google-spreadsheets-parser",
+  "description": "Simple Google Spreadsheets parser for JavaScript",
   "version": "0.1.0",
   "scripts": {
     "test": "grunt spec"
@@ -7,10 +8,11 @@
   "keywords": [
     "google",
     "spreadsheet",
+    "google drive",
     "parser",
     "json"
   ],
-  "author": "@tanaka_yutaro",
+  "author": "yutaro <yutaro.tanaka.world@gmail.com>",
   "license": "MIT",
   "repository": "git@github.com:TanakaYutaro/google-spreadsheets-parser.git",
   "devDependencies": {
