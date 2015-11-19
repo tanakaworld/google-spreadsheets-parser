@@ -1,0 +1,17 @@
+{
+  "name": "google-spreadsheets-parser",
+  "version": "0.1.0",
+  "homepage": "https://github.com/TanakaYutaro/google-spreadsheets-parser",
+  "authors": [
+    "yutaro <yutaro.tanaka.world@gmail.com>"
+  ],
+  "description": "Simple Google Spreadsheets parser for JavaScript",
+  "license": "MIT",
+  "keywords": [
+    "google",
+    "spreadsheet",
+    "google drive",
+    "parser",
+    "json"
+  ]
+}
