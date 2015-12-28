@@ -43,7 +43,7 @@ Download from [here](https://github.com/TanakaYutaro/google-spreadsheets-parser/
 4. Get data
 
   ```javascript
-  var gss = new GoogleSpreadsheetsParser(publishedUrl, true);
+  var gss = new GoogleSpreadsheetsParser(publishedUrl, {sheetTitle: 'Sample', hasTitle: true});
   
   console.log(gss.titles);          // ["ID", "Name", "Age"]
   console.log(gss.contents);        // [Array[3], Array[3], Array[3], Array[3], Array[3]]
@@ -54,3 +54,6 @@ Download from [here](https://github.com/TanakaYutaro/google-spreadsheets-parser/
 
 * `.titles` : Table titles array in the frst row.
 * `.contents` : Table data 2d array in the second row later.
+
+# Demo
+[Demo](http://tanakaworld.github.io/google-spreadsheets-parser/demo/)
