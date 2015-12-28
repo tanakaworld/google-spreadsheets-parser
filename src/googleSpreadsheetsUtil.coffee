@@ -5,7 +5,7 @@ class GoogleSpreadsheetsUtil
     return null if matched is null or matched.length isnt 2
     return matched[1]
 
-  getWorksheetId: (key) ->
+  getWorksheetId: (key, sheetTitle) ->
     url = "https://spreadsheets.google.com/feeds/worksheets/#{key}/public/basic?alt=json"
     xhr = new XMLHttpRequest()
     xhr.open("GET", url, false)
@@ -14,7 +14,13 @@ class GoogleSpreadsheetsUtil
     matched = []
     if xhr.status is 200
       basicInfo = JSON.parse(xhr.responseText)
-      matched = basicInfo.feed.entry[0].id.$t.match(/https:\/\/spreadsheets.google.com\/feeds\/worksheets\/.+\/public\/basic\/(.+)/)
+      if sheetTitle
+        for i, e of basicInfo.feed.entry
+          if e.title.$t is sheetTitle
+            matched = e.id.$t.match(/https:\/\/spreadsheets.google.com\/feeds\/worksheets\/.+\/public\/basic\/(.+)/)
+            break
+      else
+        matched = basicInfo.feed.entry[0].id.$t.match(/https:\/\/spreadsheets.google.com\/feeds\/worksheets\/.+\/public\/basic\/(.+)/)
 
     return null if matched is null or matched.length isnt 2
     return matched[1]
