@@ -12,8 +12,8 @@ GoogleSpreadsheetsUtil = (function() {
     return matched[1];
   };
 
-  GoogleSpreadsheetsUtil.prototype.getWorksheetId = function(key) {
-    var basicInfo, matched, url, xhr;
+  GoogleSpreadsheetsUtil.prototype.getWorksheetId = function(key, sheetTitle) {
+    var basicInfo, e, i, matched, ref, url, xhr;
     url = "https://spreadsheets.google.com/feeds/worksheets/" + key + "/public/basic?alt=json";
     xhr = new XMLHttpRequest();
     xhr.open("GET", url, false);
@@ -21,7 +21,18 @@ GoogleSpreadsheetsUtil = (function() {
     matched = [];
     if (xhr.status === 200) {
       basicInfo = JSON.parse(xhr.responseText);
-      matched = basicInfo.feed.entry[0].id.$t.match(/https:\/\/spreadsheets.google.com\/feeds\/worksheets\/.+\/public\/basic\/(.+)/);
+      if (sheetTitle) {
+        ref = basicInfo.feed.entry;
+        for (i in ref) {
+          e = ref[i];
+          if (e.title.$t === sheetTitle) {
+            matched = e.id.$t.match(/https:\/\/spreadsheets.google.com\/feeds\/worksheets\/.+\/public\/basic\/(.+)/);
+            break;
+          }
+        }
+      } else {
+        matched = basicInfo.feed.entry[0].id.$t.match(/https:\/\/spreadsheets.google.com\/feeds\/worksheets\/.+\/public\/basic\/(.+)/);
+      }
     }
     if (matched === null || matched.length !== 2) {
       return null;
@@ -43,10 +54,10 @@ GoogleSpreadsheetsUtil = (function() {
   };
 
   GoogleSpreadsheetsUtil.prototype.makeTitle = function(feedEntry) {
-    var cell, i, len, obj, titles;
+    var cell, j, len, obj, titles;
     titles = [];
-    for (i = 0, len = feedEntry.length; i < len; i++) {
-      obj = feedEntry[i];
+    for (j = 0, len = feedEntry.length; j < len; j++) {
+      obj = feedEntry[j];
       cell = obj.gs$cell;
       if (cell === null) {
         return titles;
@@ -61,15 +72,15 @@ GoogleSpreadsheetsUtil = (function() {
   };
 
   GoogleSpreadsheetsUtil.prototype.makeContents = function(feedEntry) {
-    var cell, columnCount, contents, i, len, obj, row, rowNumber;
+    var cell, columnCount, contents, j, len, obj, row, rowNumber;
     contents = [];
     if (!(feedEntry.length >= 1 && feedEntry[0].gs$cell)) {
       return contents;
     }
     columnCount = Number(feedEntry[feedEntry.length - 1].gs$cell.col);
     rowNumber = 0;
-    for (i = 0, len = feedEntry.length; i < len; i++) {
-      obj = feedEntry[i];
+    for (j = 0, len = feedEntry.length; j < len; j++) {
+      obj = feedEntry[j];
       cell = obj.gs$cell;
       if (Number(cell.row) !== 1) {
         if (cell.row !== rowNumber) {
@@ -91,14 +102,13 @@ GoogleSpreadsheetsUtil = (function() {
 })();
 
 GoogleSpreadsheetsParser = (function() {
-  function GoogleSpreadsheetsParser(publishedUrl, hasTitle) {
-    var _util, feedEntry, feeds, key, mtd;
-    if (hasTitle == null) {
-      hasTitle = false;
-    }
+  function GoogleSpreadsheetsParser(publishedUrl, option) {
+    var _util, feedEntry, feeds, hasTitle, key, mtd, sheetTitle;
+    sheetTitle = option.sheetTitle || null;
+    hasTitle = option.hasTitle || true;
     _util = new GoogleSpreadsheetsUtil();
     key = _util.extractKey(publishedUrl);
-    mtd = _util.getWorksheetId(key);
+    mtd = _util.getWorksheetId(key, sheetTitle);
     feeds = _util.getFeeds(key, mtd);
     feedEntry = feeds.feed.entry;
     if (hasTitle) {

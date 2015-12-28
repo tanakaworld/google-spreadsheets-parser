@@ -4,7 +4,8 @@ describe GoogleSpreadsheetsUtil, ->
   beforeAll ->
     @publishedUrl = "https://docs.google.com/spreadsheets/d/1vyPu1EtzU1DvGXfthjrR-blJ8mGe75TL4BFNWtFMm0I/pubhtml"
     @key = "1vyPu1EtzU1DvGXfthjrR-blJ8mGe75TL4BFNWtFMm0I"
-    @worksheetId = "od6"
+    @firstWorksheetId = "od6"
+    @secondWorksheetId = "obeh737"
     @util = new GoogleSpreadsheetsUtil()
 
   describe '.extractKey', ->
@@ -30,16 +31,32 @@ describe GoogleSpreadsheetsUtil, ->
         jasmine.Ajax.stubRequest(requestUrl).andReturn
           status: 200
           responseText: JSON.stringify(mockedSampleDataBasicJson)
-      it 'should got worksheetId', ->
-        expect(@util.getWorksheetId(@key)).toEqual(@worksheetId)
+
+      describe 'without sheet name', ->
+        it 'should got worksheetId', ->
+          expect(@util.getWorksheetId(@key)).toEqual(@firstWorksheetId)
+
+      describe 'with sheet name (1st sheet)', ->
+        it 'should got worksheetId', ->
+          expect(@util.getWorksheetId(@key, 'Sample')).toEqual(@firstWorksheetId)
+
+      describe 'with sheet name (2nd sheet)', ->
+        it 'should got worksheetId', ->
+          expect(@util.getWorksheetId(@key, 'Sample2')).toEqual(@secondWorksheetId)
 
     describe 'Spreadsheet is not found', ->
       beforeEach ->
         requestUrl = "https://spreadsheets.google.com/feeds/worksheets/#{@key}/public/basic?alt=json"
         jasmine.Ajax.stubRequest(requestUrl).andReturn
           status: 404
-      it 'should got null', ->
-        expect(@util.getWorksheetId(@key)).toBeNull()
+
+      describe 'without sheet name', ->
+        it 'should got null', ->
+          expect(@util.getWorksheetId(@key)).toBeNull()
+
+      describe 'with sheet name (Invalid)', ->
+        it 'should got null', ->
+          expect(@util.getWorksheetId(@key, 'Invalid')).toBeNull()
 
   describe '.getFeeds', ->
     beforeEach ->
@@ -51,20 +68,20 @@ describe GoogleSpreadsheetsUtil, ->
       beforeEach ->
         mockedSampleDataFeedJson = window.__fixtures__['spec/fixtures/sampleDataFeed']
 
-        requestUrl = "https://spreadsheets.google.com/feeds/cells/#{@key}/#{@worksheetId}/public/values?alt=json"
+        requestUrl = "https://spreadsheets.google.com/feeds/cells/#{@key}/#{@firstWorksheetId}/public/values?alt=json"
         jasmine.Ajax.stubRequest(requestUrl).andReturn
           status: 200
           responseText: JSON.stringify(mockedSampleDataFeedJson)
       it 'should got feeds', ->
-        expect(@util.getFeeds(@key, @worksheetId)).not.toBeNull()
+        expect(@util.getFeeds(@key, @firstWorksheetId)).not.toBeNull()
 
     describe 'Spreadsheet is not found', ->
       beforeEach ->
-        requestUrl = "https://spreadsheets.google.com/feeds/cells/#{@key}/#{@worksheetId}/public/values?alt=json"
+        requestUrl = "https://spreadsheets.google.com/feeds/cells/#{@key}/#{@firstWorksheetId}/public/values?alt=json"
         jasmine.Ajax.stubRequest(requestUrl).andReturn
           status: 404
       it 'should got feeds', ->
-        expect(@util.getFeeds(@key, @worksheetId)).toBeNull()
+        expect(@util.getFeeds(@key, @firstWorksheetId)).toBeNull()
 
   describe '.makeTitle', ->
     beforeEach ->

@@ -13,7 +13,9 @@
     window.onload = function () {
         this.updateSpreadSheet = function () {
             var url = $("#publishedUrl")[0].value;
-            var gss = new GoogleSpreadsheetsParser(url, true);
+            var title = $("#sheetTitle")[0].value;
+
+            var gss = new GoogleSpreadsheetsParser(url, {sheetTitle: title, hasTitle: true});
 
             console.log(gss.titles);
             console.log(gss.contents);
@@ -25,11 +27,12 @@
 
 <div class="panel-body">
     <ul>
-        <li>Enter published Spreadsheet url</li>
+        <li>Enter published Spreadsheet url & sheet title</li>
         <li>Click "Get data", output data into console log.</li>
     </ul>
     <input id="publishedUrl" type="text" size="100px"
            value="https://docs.google.com/spreadsheets/d/1vyPu1EtzU1DvGXfthjrR-blJ8mGe75TL4BFNWtFMm0I/pubhtml">
+    <input id="sheetTitle" type="text" size="50px" value="Sample2">
     <button onclick="updateSpreadSheet()">Get data</button>
 </div>
 
