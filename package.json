@@ -32,5 +32,8 @@
     "karma-json-fixtures-preprocessor": "0.0.5",
     "karma-phantomjs-launcher": "^0.2.1",
     "phantomjs": "^1.9.18"
+  },
+  "dependencies": {
+    "xmlhttprequest": "^1.8.0"
   }
 }
