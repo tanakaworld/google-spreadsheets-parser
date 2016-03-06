@@ -7,6 +7,7 @@ module.exports = (grunt)->
           join: true
         files:
           'dist/googleSpreadsheetsParser.js': [
+            'src/init.coffee'
             'src/googleSpreadsheetsUtil.coffee'
             'src/googleSpreadsheetsParser.coffee'
           ]

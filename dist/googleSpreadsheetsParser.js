@@ -1,4 +1,8 @@
-var GoogleSpreadsheetsParser, GoogleSpreadsheetsUtil;
+var GoogleSpreadsheetsParser, GoogleSpreadsheetsUtil, XMLHttpRequest;
+
+if (!XMLHttpRequest) {
+  XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+}
 
 GoogleSpreadsheetsUtil = (function() {
   function GoogleSpreadsheetsUtil() {}
