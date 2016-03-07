@@ -1,6 +1,7 @@
 {
   "name": "google-spreadsheets-parser",
   "description": "Simple Google Spreadsheets parser for JavaScript",
+  "main": "./index.js",
   "version": "0.2.0",
   "scripts": {
     "test": "grunt spec"
