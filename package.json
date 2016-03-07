@@ -2,7 +2,7 @@
   "name": "google-spreadsheets-parser",
   "description": "Simple Google Spreadsheets parser for JavaScript",
   "main": "./index.js",
-  "version": "0.2.0",
+  "version": "0.4.0",
   "scripts": {
     "test": "grunt spec"
   },
@@ -15,7 +15,7 @@
   ],
   "author": "yutaro <yutaro.tanaka.world@gmail.com>",
   "license": "MIT",
-  "repository": "git@github.com:TanakaYutaro/google-spreadsheets-parser.git",
+  "repository": "git@github.com:tanakaworld/google-spreadsheets-parser.git",
   "devDependencies": {
     "coffee-script": "^1.10.0",
     "grunt": "^0.4.5",
