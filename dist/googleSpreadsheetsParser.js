@@ -121,6 +121,23 @@ GoogleSpreadsheetsParser = (function() {
     this.contents = _util.makeContents(feedEntry);
   }
 
+  GoogleSpreadsheetsParser.prototype.toJson = function() {
+    var result;
+    result = this.contents.map((function(_this) {
+      return function(content) {
+        var j, len, ref, row, title, titleIndex;
+        row = {};
+        ref = _this.titles;
+        for (titleIndex = j = 0, len = ref.length; j < len; titleIndex = ++j) {
+          title = ref[titleIndex];
+          row[title] = content[titleIndex];
+        }
+        return row;
+      };
+    })(this));
+    return JSON.stringify(result);
+  };
+
   return GoogleSpreadsheetsParser;
 
 })();

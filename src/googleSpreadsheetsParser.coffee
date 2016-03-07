@@ -14,3 +14,12 @@ class GoogleSpreadsheetsParser
 
     @titles = _util.makeTitle(feedEntry) if hasTitle
     @contents = _util.makeContents(feedEntry)
+
+  toJson: ->
+    result = @contents.map((content) =>
+      row = {}
+      for title, titleIndex in @titles
+        row[title] = content[titleIndex]
+      row
+    )
+    JSON.stringify(result)
