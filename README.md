@@ -60,6 +60,7 @@ Download from [here](https://github.com/TanakaYutaro/google-spreadsheets-parser/
 
 * `.titles` : Table titles array in the frst row.
 * `.contents` : Table data 2d array in the second row later.
+* `.toJSON` : JSON data of contents.
 
 # Demo
 [Demo](http://tanakaworld.github.io/google-spreadsheets-parser/demo/)
