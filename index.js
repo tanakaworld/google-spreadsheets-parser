@@ -124,3 +124,4 @@ GoogleSpreadsheetsParser = (function() {
   return GoogleSpreadsheetsParser;
 
 })();
+module.exports = GoogleSpreadsheetsParser;

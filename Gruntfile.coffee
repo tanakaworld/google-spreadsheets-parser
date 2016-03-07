@@ -7,6 +7,7 @@ module.exports = (grunt)->
           join: true
         files:
           'dist/googleSpreadsheetsParser.js': [
+            'src/init.coffee'
             'src/googleSpreadsheetsUtil.coffee'
             'src/googleSpreadsheetsParser.coffee'
           ]
@@ -33,10 +34,21 @@ module.exports = (grunt)->
         options:
           compilation_level: 'SIMPLE_OPTIMIZATIONS'
 
+    'file_append':
+      default_options:
+        files: [
+          {
+            append: "module.exports = GoogleSpreadsheetsParser;"
+            input: "./dist/googleSpreadsheetsParser.js"
+            output: "./index.js"
+          }
+        ]
+
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-karma'
   grunt.loadNpmTasks 'grunt-http'
   grunt.loadNpmTasks 'grunt-closure-compiler'
+  grunt.loadNpmTasks 'grunt-file-append'
 
   grunt.registerTask 'spec', ['http', 'karma']
-  grunt.registerTask 'publish', ['coffee:dist', 'closure-compiler:publish']
+  grunt.registerTask 'publish', ['coffee:dist', 'file_append', 'closure-compiler:publish']

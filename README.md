@@ -34,10 +34,16 @@ Download from [here](https://github.com/TanakaYutaro/google-spreadsheets-parser/
 
   ![intro-3](https://raw.githubusercontent.com/wiki/TanakaYutaro/google-spreadsheets-parser/img/intro-3.png)
   
-3. Import googleSpreadsheetsParser.js in header
-  
+3. Setting
+
+  With Browser, import googleSpreadsheetsParser.js in header
   ```html
   <script type="text/javascript" src="/path/to/googleSpreadsheetsParser.js"></script>
+  ```
+
+  Node.js
+  ```
+  var GoogleSpreadsheetsParser = require 'google-spreadsheets-parser'
   ```
   
 4. Get data
