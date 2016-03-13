@@ -6,6 +6,7 @@ module.exports = (config) ->
     frameworks: ['jasmine']
 
     files: [
+      'node_modules/google-spreadsheets-parser/dist/googleSpreadsheetsParser.js'
       'src/**/*.coffee'
       'spec/**/*Spec.coffee'
     ]
