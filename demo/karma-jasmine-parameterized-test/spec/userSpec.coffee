@@ -1,8 +1,9 @@
 describe "User", ->
   describe "#canDrink", ->
     assertCanDrink = (name, age, canDrink) ->
-      user = new User(name, 25)
-      expect(user.canDrink()).toBe(canDrink)
+      it "Age:#{age}, CanDrink:#{canDrink}", ->
+        user = new User(name, age)
+        expect(user.canDrink()).toBe(canDrink)
 
     gss = new GoogleSpreadsheetsParser(
       'https://docs.google.com/spreadsheets/d/1LjDMRm8j_0XHJiOF7DZuYWUXQHYpZ6MxRnMkh25plZ8/pubhtml'
@@ -19,5 +20,5 @@ describe "User", ->
     target = JSON.parse(gss.toJson())
 
     for t in target
-      it "#{t.age}", ->
-        assertCanDrink(t.name, parseInt(t.age), Boolean(t.canDrink))
+      assertCanDrink(t.name, parseInt(t.age), t.canDrink == 'true')
+
