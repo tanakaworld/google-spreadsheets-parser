@@ -37,7 +37,7 @@ Download from [here](https://github.com/TanakaYutaro/google-spreadsheets-parser/
 
   Node.js
   ```
-  var GoogleSpreadsheetsParser = require 'google-spreadsheets-parser'
+  var GoogleSpreadsheetsParser = require('google-spreadsheets-parser')
   ```
   
 4. Get data
@@ -57,4 +57,5 @@ Download from [here](https://github.com/TanakaYutaro/google-spreadsheets-parser/
 * `.toJson()` : JSON data of contents.
 
 # Demo
-[Demo](http://tanakaworld.github.io/google-spreadsheets-parser/demo/)
+- [With Browser](http://tanakaworld.github.io/google-spreadsheets-parser/demo/)
+- [Parameterized test](https://github.com/tanakaworld/google-spreadsheets-parser/tree/master/demo/karma-jasmine-parameterized-test)
